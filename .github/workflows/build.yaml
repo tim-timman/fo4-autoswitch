@@ -1,0 +1,28 @@
+name: Build the plugin
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Enable Developer Command Prompt
+        uses: ilammy/msvc-dev-cmd@v1.13.0
+        with:
+          arch: x64
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Build the plugin
+        run: python build.py
+      - name: Archive plugin
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          compression-level: 0
+          path: dist\*.zip

@@ -1,14 +1,22 @@
-import os, sys
+import subprocess
+import sys
 
 # Configuration
-BUILD_DIR        = 'build'
-PROJECT_DIR      = 'src'
-PLATFORM_TOOLSET = 'v140'
-F4SE_REVISION    = 'tags/v0.6.15'
+BUILD_DIR          = "build"
+PROJECT_DIR        = "src"
+PLATFORM_TOOLSET   = "v143"
+F4SE_REVISION      = "v0.7.2"
+DIST_DIR           = "dist"
 
 # Run build tools
-buildOK = os.system('python tools/build-tools/build_plugin.py "{}" "{}" "{}" "{}"'
-    .format(BUILD_DIR, PROJECT_DIR, PLATFORM_TOOLSET, F4SE_REVISION))
-    
-# Report result
-sys.exit(buildOK)
+p = subprocess.run([
+    sys.executable,
+    "tools/build-tools/build_plugin.py",
+    "--build-dir", BUILD_DIR,
+    "--project-dir", PROJECT_DIR,
+    "--dist-dir", DIST_DIR,
+    "--f4se-revision", F4SE_REVISION,
+    "--platform-toolset", PLATFORM_TOOLSET,
+])
+
+raise SystemExit(p.returncode)
